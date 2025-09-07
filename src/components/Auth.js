@@ -1,8 +1,8 @@
 // src/components/Auth.js
 import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import API from "../api";  // ✅ use API instead of axios
-import "./Auth.css";
+import "./Auth.css";  // 👈 Import CSS
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,10 +15,17 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        await API.post("/api/auth/login", { email, password });
+        await axios.post(
+          "https://klickks-backend-2.onrender.com/api/auth/login",
+          { email, password },
+          { withCredentials: true }
+        );
         navigate("/dashboard");
       } else {
-        await API.post("/api/auth/register", { email, password });
+        await axios.post("https://klickks-backend-2.onrender.com/api/auth/register", {
+          email,
+          password,
+        });
         alert("✅ Registered successfully! Please login now.");
         setIsLogin(true);
       }

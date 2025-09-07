@@ -1,23 +1,21 @@
-// src/components/Dashboard.js
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import API from "../api"; // ✅ use API
 
 export default function Dashboard() {
   const [auth, setAuth] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    API.get("/api/auth/me")
+    axios.get("https://klickks-backend-2.onrender.com/api/auth/me", { withCredentials: true })
       .then(res => {
         if (!res.data.loggedIn) navigate("/");
         else setAuth(true);
-      })
-      .catch(() => navigate("/"));
+      });
   }, [navigate]);
 
   const handleLogout = async () => {
-    await API.post("/api/auth/logout");
+    await axios.post("https://klickks-backend-2.onrender.com/api/auth/logout", {}, { withCredentials: true });
     navigate("/");
   };
 
