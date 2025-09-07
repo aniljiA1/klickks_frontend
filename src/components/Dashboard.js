@@ -1,21 +1,23 @@
+// src/components/Dashboard.js
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../api"; // ✅ use API
 
 export default function Dashboard() {
   const [auth, setAuth] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/auth/me", { withCredentials: true })
+    API.get("/api/auth/me")
       .then(res => {
         if (!res.data.loggedIn) navigate("/");
         else setAuth(true);
-      });
+      })
+      .catch(() => navigate("/"));
   }, [navigate]);
 
   const handleLogout = async () => {
-    await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+    await API.post("/api/auth/logout");
     navigate("/");
   };
 

@@ -1,8 +1,8 @@
 // src/components/Auth.js
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Auth.css";  // 👈 Import CSS
+import API from "../api";  // ✅ use API instead of axios
+import "./Auth.css";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,17 +15,10 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        await axios.post(
-          "http://localhost:5000/api/auth/login",
-          { email, password },
-          { withCredentials: true }
-        );
+        await API.post("/api/auth/login", { email, password });
         navigate("/dashboard");
       } else {
-        await axios.post("http://localhost:5000/api/auth/register", {
-          email,
-          password,
-        });
+        await API.post("/api/auth/register", { email, password });
         alert("✅ Registered successfully! Please login now.");
         setIsLogin(true);
       }
